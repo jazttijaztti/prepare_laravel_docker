@@ -1,0 +1,14 @@
+docker psでコンテナIDを確認 XXXXX
+docker exec -it XXXXX /bin/bash でコンテナに入る
+cd /var/www/html
+RUN COMPOSER_MEMORY_LIMIT=-1 composer create-project laravel/laravel project_name --prefer-dist
+exit
+
+/nginx/logのエラーログとアクセスログがフォルダになってるのでファイルに変えてください
+
+
+
+mkdir -p storage/framework/cache/data/
+mkdir -p storage/framework/app/cache
+mkdir -p storage/framework/sessions
+mkdir -p storage/framework/views
