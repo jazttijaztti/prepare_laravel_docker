@@ -1,7 +1,21 @@
-FROM otohikodocker/php74-base
+FROM php:7.2-fpm
+COPY php.ini /usr/local/etc/php/
+
+RUN apt-get update \
+  && apt-get install -y zlib1g-dev mariadb-client \
+  && docker-php-ext-install zip pdo_mysql
+
+#Composer install
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+ENV COMPOSER_ALLOW_SUPERUSER 1
+
+ENV COMPOSER_HOME /composer
+
+ENV PATH $PATH:/composer/vendor/bin
 
 
-# php-fpm起動
-# RUN /usr/local/sbin/php-fpm --daemonize
+WORKDIR /var/www/html
 
-RUN docker-php-ext-install exif
+RUN composer global require "laravel/installer"
+RUN COMPOSER_MEMORY_LIMIT=-1 composer create-project laravel/laravel project_name --prefer-dist
